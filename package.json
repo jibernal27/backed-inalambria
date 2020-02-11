@@ -1,0 +1,76 @@
+{
+  "name": "backend-inalambria",
+  "version": "1.0.0",
+  "description": "Prueba para inalambria. CRUD de playlist de canciones",
+  "main": "app.js",
+  "scripts": {
+    "start": "npm run prod",
+    "build": "npm-run-all clean transpile",
+    "server": "node ./dist-server/bin/www",
+    "dev": "NODE_ENV=development npm-run-all build server",
+    "prod": "NODE_ENV=production npm-run-all build server",
+    "transpile": "babel ./server --out-dir dist-server",
+    "clean": "rimraf dist-server",
+    "watch:dev": "nodemon",
+    "test": "jest",
+    "lint": "eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jibernal27/backed-inalambria.git"
+  },
+  "author": "jibernal27",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jibernal27/backed-inalambria/issues"
+  },
+  "homepage": "https://github.com/jibernal27/backed-inalambria#readme",
+  "dependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "^4.17.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "nodemon": "^2.0.2",
+    "npm-run-all": "^4.1.5",
+    "pg": "^7.18.1",
+    "pg-hstore": "^2.3.3",
+    "rimraf": "^3.0.2",
+    "sequelize": "^5.21.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/node": "^7.8.4",
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "express-generator": "^4.16.1",
+    "jest": "^25.1.0",
+    "sequelize-cli": "^5.5.1"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
+  "nodemonConfig": {
+    "exec": "npm run dev",
+    "watch": [
+      "server/*",
+      "public/*"
+    ],
+    "ignore": [
+      "**/__tests__/**",
+      "*.test.js",
+      "*.spec.js"
+    ]
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
