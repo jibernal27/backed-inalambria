@@ -6,13 +6,13 @@
   "scripts": {
     "start": "npm run prod",
     "build": "npm-run-all clean transpile",
-    "server": "node ./dist-server/bin/www",
-    "dev": "NODE_ENV=development npm-run-all build server",
-    "prod": "NODE_ENV=production npm-run-all build server",
+    "server": "node -r dotenv/config ./dist-server/bin/www",
+    "dev": "cross-env NODE_ENV=development npm-run-all env build server",
+    "prod": "cross-env NODE_ENV=production npm-run-all env build server",
     "transpile": "babel ./server --out-dir dist-server",
     "clean": "rimraf dist-server",
     "watch:dev": "nodemon",
-    "test": "jest",
+    "test": "npm-run-all env-test jest",
     "lint": "eslint"
   },
   "repository": {
@@ -28,34 +28,53 @@
   "dependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
+    "axios": "^0.19.2",
+    "bcrypt": "^3.0.8",
     "cookie-parser": "~1.4.4",
+    "cross-env": "^7.0.0",
     "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-validator": "^6.4.0",
     "http-errors": "~1.6.3",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "~1.9.1",
     "nodemon": "^2.0.2",
     "npm-run-all": "^4.1.5",
     "pg": "^7.18.1",
     "pg-hstore": "^2.3.3",
+    "regenerator-runtime": "^0.13.3",
     "rimraf": "^3.0.2",
     "sequelize": "^5.21.4"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/node": "^7.8.4",
+    "@babel/register": "^7.8.3",
+    "babel-plugin-add-module-exports": "^1.0.2",
+    "babel-plugin-root-import": "^6.4.1",
     "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "express-generator": "^4.16.1",
     "jest": "^25.1.0",
+    "prettier": "^1.19.1",
     "sequelize-cli": "^5.5.1"
   },
   "babel": {
     "presets": [
       "@babel/preset-env"
+    ],
+    "plugins": [
+      [
+        "babel-plugin-root-import"
+      ],
+      "add-module-exports"
     ]
   },
   "nodemonConfig": {
