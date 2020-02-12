@@ -19,10 +19,12 @@ export const getSong = async track => {
 
 export const searchTracks = async (query, page = 1) => {
   const index = (page - 1) * LIMIT
-  return getRequest('search', {
+  const res = await getRequest('search', {
     q: `track:"${query}"`,
     index,
     limit: LIMIT,
     access_token: null
   })
+  res.limit = LIMIT
+  return res
 }
