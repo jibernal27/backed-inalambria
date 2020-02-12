@@ -8,12 +8,17 @@ const basename = path.basename(__filename)
 
 const db = {}
 const environmentConfig = config[NODE_ENV]
-const sequelize = new Sequelize(
-  environmentConfig.database,
-  environmentConfig.username,
-  environmentConfig.password,
-  environmentConfig
-)
+let sequelize
+if (process.env.DATABASE_URL) {
+  sequelize = new Sequelize(process.env.DATABASE_URL)
+} else {
+  sequelize = new Sequelize(
+    environmentConfig.database,
+    environmentConfig.username,
+    environmentConfig.password,
+    environmentConfig
+  )
+}
 
 fs.readdirSync(__dirname)
   .filter(file => {
