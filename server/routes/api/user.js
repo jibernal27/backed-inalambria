@@ -5,7 +5,7 @@ import {
   userSignUpValidator
 } from './../validators'
 import { userViews } from '~/server/views'
-import authMiddlewarwe from '~/server/middleware/auth'
+import authMiddleware from '~/server/middleware/auth'
 
 import { User } from '~/server/models'
 import jwt from 'jsonwebtoken'
@@ -16,7 +16,7 @@ const generateAuthToken = user => {
   return jwt.sign({ id: user.id }, process.env.SECRET)
 }
 
-router.get('/profile', authMiddlewarwe, async (req, res) => {
+router.get('/profile', authMiddleware, async (req, res) => {
   return res.json(userViews.defaultView(req.user))
 })
 

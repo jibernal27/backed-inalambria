@@ -29,10 +29,8 @@ const associateTrackToPlayList = async (palyListInstance, track) => {
 }
 
 router.get('/', async (req, res, next) => {
-  const paginated = await paginateQuery(req.query, PlayList, {
-    where: { userId: req.user.id }
-  })
-  paginated.data = paginated.data.map(p => playListView.defaultView(p))
+  let paginated = await PlayList.findAll({ where: { userId: req.user.id } })
+  paginated = paginated.map(p => playListView.defaultView(p))
   return res.json(paginated)
 })
 
@@ -91,5 +89,44 @@ router.post(
     }
   }
 )
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const playList = await PlayList.findOne({
+      where: { id: req.params.id, userId: req.user.id }
+    })
+    if (!playList) {
+      return res.status(404).json({ error: 'not_found' })
+    }
+    await PlaylistTracks.destroy({ where: { playListId: playList.id } })
+    await playList.destroy()
+    return res.json(playListView.defaultView(playList))
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
+})
+
+router.delete('/:id/tracks/:trackId', async (req, res) => {
+  try {
+    const [playList, trackInstance] = await Promise.all([
+      PlayList.findOne({
+        where: { id: req.params.id, userId: req.user.id }
+      }),
+      Track.findOne({
+        where: { deezerId: req.params.trackId }
+      })
+    ])
+    if (!playList || !trackInstance) {
+      return res.status(404).json({ error: 'not_found' })
+    }
+
+    await PlaylistTracks.destroy({
+      where: { playListId: playList.id, trackId: trackInstance.id }
+    })
+    return res.json({})
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
+})
 
 export default router

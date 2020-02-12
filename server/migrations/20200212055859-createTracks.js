@@ -10,7 +10,8 @@ export default {
         type: Sequelize.JSON
       },
       deezerId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        unique: true
       },
       createdAt: {
         type: Sequelize.DATE
